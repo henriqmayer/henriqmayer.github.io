@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A practical approach to performance work through measurement, I/O and rendering analysis, focused changes, and verification.">
+  <meta name="theme-color" content="#0b0f14">
+  <meta property="og:title" content="A practical workflow for performance optimization">
+  <meta property="og:type" content="article">
+  <title>Performance Optimization in Practice — Henrique Mayer</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../" aria-label="Henrique Mayer home">
+        <span class="brand-mark" aria-hidden="true">HM</span>
+        <span>henrique.mayer</span>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="../#work">Work</a>
+        <a href="../#stack">Stack</a>
+        <a href="./" aria-current="location">Notes</a>
+        <a href="../#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <article>
+      <header class="article-header container">
+        <p class="article-meta">Performance · Python · 4 min read</p>
+        <h1>A practical workflow for performance optimization</h1>
+        <p class="article-deck">Performance work is most useful when it starts with a concrete user problem and ends with a result you can verify.</p>
+      </header>
+
+      <div class="article-layout container">
+        <div class="article-content">
+          <p>While working on engineering simulation software at ESSS, I worked on I/O and chart-rendering optimizations for a repeated professional workflow. The goal was not a benchmark in isolation, but a faster and more dependable way for users to complete their work.</p>
+          <p class="article-note">This article shares general engineering lessons only. It does not include proprietary code, client data, or internal implementation details.</p>
+
+          <h2>Start with the wait users actually experience</h2>
+          <p>A slow operation can involve several different stages: reading data, transforming it, preparing a view, and rendering the result. Treating all of that as one undifferentiated problem makes it harder to choose a useful change.</p>
+          <p>A better starting point is a specific question: which user action is slow, under what conditions, and what would count as a meaningful improvement? A clear target helps separate necessary work from optimization that only looks good in isolation.</p>
+
+          <h2>Measure before choosing a solution</h2>
+          <p>It is tempting to start with a familiar technique, such as adding cache or rewriting a loop. Those may be appropriate, but only after the expensive part of the workflow is understood.</p>
+          <p>A practical approach is to measure the stages separately and compare representative workloads. Small inputs and large inputs can expose different bottlenecks. The goal is not to collect the largest possible amount of profiling data; it is to gather enough evidence to explain where the waiting time goes.</p>
+
+          <h2>Look at I/O and rendering as separate concerns</h2>
+          <p>Data access and presentation can have very different costs. Reading or parsing a large dataset may dominate one workflow, while a complex chart may dominate another. If both are present, improving only one can leave the user-facing result disappointingly close to the original.</p>
+          <p>Separating these concerns also makes verification easier. A change to file or data access can be evaluated independently from a change to chart construction or drawing. That reduces the chance of attributing an improvement to the wrong change.</p>
+
+          <h2>Prefer focused changes over broad rewrites</h2>
+          <p>Performance work often happens inside an existing product with established behavior. A focused change is usually easier to review, test, and revert than a broad rewrite. It also keeps the conversation centered on observable results rather than architectural preferences.</p>
+          <p>Useful questions before changing code include:</p>
+          <ul>
+            <li>Can this path avoid work that is repeated unnecessarily?</li>
+            <li>Is data being read, copied, or transformed more than once?</li>
+            <li>Is rendering work being performed for content that is not visible?</li>
+            <li>Can an expensive operation be deferred without changing the expected behavior?</li>
+          </ul>
+
+          <h2>Verify correctness and performance together</h2>
+          <p>A faster result is only useful if it remains correct. Automated tests, representative fixtures, and review of the affected workflow help protect against regressions. For numerical or visual software, it is also important to check that optimization has not changed the meaning of the output.</p>
+          <p>The final measurement should use the same workflow and comparable data as the initial one. That makes the result easier to explain and gives the team a baseline for future changes.</p>
+
+          <h2>The broader lesson</h2>
+          <p>Good performance work is not a collection of tricks. It is a sequence of understanding the user problem, locating the expensive work, making targeted changes, and verifying the result. That process is applicable to simulation software, web applications, APIs, and many other production systems.</p>
+
+          <footer class="article-footer">
+            <a class="text-link" href="./">← Back to engineering notes</a>
+          </footer>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2026 Henrique Mayer</p>
+      <p><a href="mailto:henriqmayer@proton.me">henriqmayer@proton.me</a></p>
+    </div>
+  </footer>
+</body>
+</html>
