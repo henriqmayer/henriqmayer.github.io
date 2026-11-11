@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Uma abordagem prática para trabalho de performance por meio de medição, análise de I/O e renderização, mudanças focadas e verificação.">
+  <meta name="theme-color" content="#0b0f14">
+  <meta property="og:title" content="Um fluxo prático para otimização de performance">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="pt_BR">
+  <title>Otimização de Performance na Prática — Henrique Mayer</title>
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Ir para o conteúdo</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../" aria-label="Henrique Mayer — página inicial">
+        <span class="brand-mark" aria-hidden="true">HM</span>
+        <span>henrique.mayer</span>
+      </a>
+      <nav class="main-nav" aria-label="Navegação principal">
+        <a href="../#services">Serviços</a>
+        <a href="../#work">Projetos</a>
+        <a href="./" aria-current="location">Notas</a>
+        <a href="../#contact">Contato</a>
+      </nav>
+      <nav class="language-switcher" aria-label="Seleção de idioma">
+        <a href="../../blog/performance-optimization.html" lang="en" hreflang="en">EN</a>
+        <a href="performance-optimization.html" lang="pt-BR" hreflang="pt-BR" aria-current="page">PT-BR</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <article>
+      <header class="article-header container">
+        <p class="article-meta">Performance · Python · leitura de 4 min</p>
+        <h1>Um fluxo prático para otimização de performance</h1>
+        <p class="article-deck">O trabalho de performance é mais útil quando começa com um problema concreto do usuário e termina com um resultado que pode ser verificado.</p>
+      </header>
+
+      <div class="article-layout container">
+        <div class="article-content">
+          <p>Na ESSS, trabalhei com otimizações de I/O e renderização de gráficos em um fluxo profissional repetitivo. O objetivo não era um benchmark isolado, mas uma forma mais rápida e confiável de os usuários concluírem seu trabalho.</p>
+          <p class="article-note">Este artigo compartilha apenas lições gerais de engenharia. Não inclui código proprietário, dados de clientes ou detalhes internos de implementação.</p>
+
+          <h2>Comece pela espera que os usuários realmente enfrentam</h2>
+          <p>Uma operação lenta pode envolver vários estágios: leitura de dados, transformação, preparação de uma visualização e renderização do resultado. Tratar tudo como um único problema indistinto dificulta a escolha de uma mudança útil.</p>
+          <p>Um ponto de partida melhor é uma pergunta específica: qual ação do usuário está lenta, sob quais condições e o que seria considerado uma melhoria significativa? Um objetivo claro ajuda a separar o trabalho necessário de otimizações que só parecem boas isoladamente.</p>
+
+          <h2>Meça antes de escolher uma solução</h2>
+          <p>É tentador começar com uma técnica conhecida, como adicionar cache ou reescrever um loop. Essas opções podem ser adequadas, mas somente depois de entender qual parte do fluxo é realmente custosa.</p>
+          <p>Uma abordagem prática é medir os estágios separadamente e comparar cargas de trabalho representativas. Entradas pequenas e grandes podem revelar gargalos diferentes. O objetivo não é coletar o maior volume possível de dados de profiling, mas reunir evidências suficientes para explicar onde o tempo de espera é gasto.</p>
+
+          <h2>Considere I/O e renderização como preocupações separadas</h2>
+          <p>Acesso a dados e apresentação podem ter custos muito diferentes. Ler ou interpretar um grande conjunto de dados pode dominar um fluxo, enquanto um gráfico complexo pode dominar outro. Quando ambos estão presentes, melhorar apenas um pode deixar o resultado percebido pelo usuário decepcionantemente próximo do original.</p>
+          <p>Separar essas preocupações também facilita a verificação. Uma mudança no acesso a arquivos ou dados pode ser avaliada independentemente de uma mudança na construção ou no desenho de gráficos. Isso reduz a chance de atribuir uma melhoria à alteração errada.</p>
+
+          <h2>Prefira mudanças focadas a reescritas amplas</h2>
+          <p>O trabalho de performance geralmente acontece em um produto existente, com comportamento já estabelecido. Uma mudança focada costuma ser mais fácil de revisar, testar e reverter do que uma reescrita ampla. Ela também mantém a conversa centrada em resultados observáveis, em vez de preferências arquiteturais.</p>
+          <p>Algumas perguntas úteis antes de alterar o código:</p>
+          <ul>
+            <li>Este caminho pode evitar trabalho que é repetido desnecessariamente?</li>
+            <li>Os dados estão sendo lidos, copiados ou transformados mais de uma vez?</li>
+            <li>Há renderização de conteúdo que não está visível?</li>
+            <li>Uma operação custosa pode ser adiada sem mudar o comportamento esperado?</li>
+          </ul>
+
+          <h2>Verifique correção e performance em conjunto</h2>
+          <p>Um resultado mais rápido só é útil se continuar correto. Testes automatizados, fixtures representativas e revisão do fluxo afetado ajudam a evitar regressões. Para software numérico ou visual, também é importante verificar se a otimização não mudou o significado do resultado.</p>
+          <p>A medição final deve usar o mesmo fluxo e dados comparáveis aos da medição inicial. Isso torna o resultado mais fácil de explicar e fornece à equipe uma referência para mudanças futuras.</p>
+
+          <h2>A lição mais ampla</h2>
+          <p>Um bom trabalho de performance não é uma coleção de truques. É uma sequência de entender o problema do usuário, localizar o trabalho custoso, fazer mudanças direcionadas e verificar o resultado. Esse processo se aplica a software de simulação, aplicações web, APIs e muitos outros sistemas em produção.</p>
+
+          <footer class="article-footer">
+            <a class="text-link" href="./">← Voltar às notas de engenharia</a>
+          </footer>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2026 Henrique Mayer</p>
+      <p><a href="mailto:henriqmayer@proton.me">henriqmayer@proton.me</a></p>
+    </div>
+  </footer>
+</body>
+</html>
