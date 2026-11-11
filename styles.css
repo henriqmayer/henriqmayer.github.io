@@ -400,7 +400,9 @@
   }
 
   .profile-list dt {
+    min-width: 0;
     color: var(--code);
+    overflow-wrap: anywhere;
   }
 
   .profile-list dt::after {
@@ -409,7 +411,9 @@
   }
 
   .profile-list dd {
+    min-width: 0;
     color: var(--text);
+    overflow-wrap: anywhere;
   }
 
   .profile-status {
